@@ -1,12 +1,12 @@
 package th.ac.ku.atm.service;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import th.ac.ku.atm.data.CustomerRepository;
 import th.ac.ku.atm.model.Customer;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CustomerService {
@@ -33,8 +33,8 @@ public class CustomerService {
 
     private Customer findCustomer(int id) {
         try {
-            return customerRepository.findById(id);
-        } catch (EmptyResultDataAccessException e) {
+            return customerRepository.findById(id).get();
+        } catch (NoSuchElementException e) {
             return null;
         }
     }
