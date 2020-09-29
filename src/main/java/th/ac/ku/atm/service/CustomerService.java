@@ -31,7 +31,7 @@ public class CustomerService {
         return BCrypt.hashpw(pin, salt);
     }
 
-    private Customer findCustomer(int id) {
+    public Customer findCustomer(int id) {
         try {
             return customerRepository.findById(id).get();
         } catch (NoSuchElementException e) {
