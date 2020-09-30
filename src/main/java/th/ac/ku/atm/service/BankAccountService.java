@@ -41,9 +41,21 @@ public class BankAccountService {
         return response.getBody();
     }
 
-    public void editBankAccount(BankAccount bankAccount) {
+    public void depositBankAccount(BankAccount bankAccount, double val) {
         String url = "http://localhost:8091/api/bankaccount/" + bankAccount.getId();
-        restTemplate.put(url, bankAccount);
+        ResponseEntity<BankAccount> response = restTemplate.getForEntity(url, BankAccount.class);
+        BankAccount bk = response.getBody();
+        bk.setBalance(bk.getBalance() + val);
+        restTemplate.put(url, bk);
+    }
+
+    public void withdrawBankAccount(BankAccount bankAccount, double val) {
+        String url = "http://localhost:8091/api/bankaccount/" + bankAccount.getId();
+        ResponseEntity<BankAccount> response = restTemplate.getForEntity(url, BankAccount.class);
+        BankAccount bk = response.getBody();
+        if (bk.getBalance() - val >= 0)
+            bk.setBalance(bk.getBalance() - val);
+        restTemplate.put(url, bk);
     }
 
     public void deleteBankAccount(BankAccount bankAccount) {

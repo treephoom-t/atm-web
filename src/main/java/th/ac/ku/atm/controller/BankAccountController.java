@@ -28,16 +28,30 @@ public class BankAccountController {
         return "redirect:bankaccount";
     }
 
-    @GetMapping("/edit/{id}")
-    public String getEditBankAccountPage(@PathVariable int id, Model model) {
+    @GetMapping("/deposit/{id}")
+    public String getDepositBankAccountPage(@PathVariable int id, Model model) {
         BankAccount bankAccount = bankAccountService.getBankAccount(id);
         model.addAttribute("bankAccount", bankAccount);
-        return "bankaccount-edit";
+        return "bankaccount-deposit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editAccount(@PathVariable int id, @ModelAttribute BankAccount bankAccount, Model model) {
-        bankAccountService.editBankAccount(bankAccount);
+    @PostMapping("/deposit/{id}")
+    public String depositBankAccount(@PathVariable int id, @ModelAttribute BankAccount bankAccount, Model model) {
+        bankAccountService.depositBankAccount(bankAccount, bankAccount.getBalance());
+        model.addAttribute("bankaccounts", bankAccountService.getBankAccounts());
+        return "redirect:/bankaccount";
+    }
+
+    @GetMapping("/withdraw/{id}")
+    public String getWithdrawBankAccountPage(@PathVariable int id, Model model) {
+        BankAccount bankAccount = bankAccountService.getBankAccount(id);
+        model.addAttribute("bankAccount", bankAccount);
+        return "bankaccount-withdraw";
+    }
+
+    @PostMapping("/withdraw/{id}")
+    public String withdrawBankAccount(@PathVariable int id, @ModelAttribute BankAccount bankAccount, Model model) {
+        bankAccountService.withdrawBankAccount(bankAccount, bankAccount.getBalance());
         model.addAttribute("bankaccounts", bankAccountService.getBankAccounts());
         return "redirect:/bankaccount";
     }
